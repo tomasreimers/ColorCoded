@@ -1,6 +1,6 @@
 var _ = require("lodash");
+var HighlightingEditable = require('./highlighting-editable');
 var JSZip = require("JSZip");
-var Highlight = require('react-highlight');
 var React = window.React = require('react');
 var ReactDOM = require("react-dom");
 var update = require('react-addons-update');
@@ -8,15 +8,17 @@ var update = require('react-addons-update');
 var mountNode = document.getElementById("app");
 
 // TODO move constants into separate file
-var CSS_BASE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/';
+var CSS_BASE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/';
 var THEMES = [
   'default',
   'color-brewer',
   'github',
   'monokai',
+  'monokai-sublime',
   'mono-blue',
   'railscasts',
-  'solarized',
+  'solarized-dark',
+  'solarized-light',
   'tomorrow',
   'zenburn'
 ];
@@ -115,17 +117,13 @@ var App = React.createClass({
   },
 
   _renderColorCodedFile: function(file, index) {
-    var extension = file.name.split('.').pop();
-
     return (
       <div className="fileBox" key={index}>
         <div className="fileName">
           {file.name}
         </div>
         <div className="fileContents">
-          <Highlight className={extension}>
-            {file.contents}
-          </Highlight>
+          <HighlightingEditable file={file} />
         </div>
       </div>
     );
@@ -137,10 +135,13 @@ var App = React.createClass({
 
     return (
       <div>
-        <div dangerouslySetInnerHTML={ {__html:
-        // Hack to embed the stylesheet theme in the DOM
-          '<link rel="stylesheet" href="'+ CSS_BASE_URL + this.state.theme + '.min.css" >'
-        } } />
+        <div
+          dangerouslySetInnerHTML={ {__html:
+          // Hack to embed the stylesheet theme in the DOM
+            '<link rel="stylesheet" href="'+ CSS_BASE_URL + this.state.theme + '.min.css" >'
+          } }
+          style={{display: 'none'}}
+        />
         <div className='nav'>
           <form onSubmit={this.handleSubmit}>
             <div className="left">
