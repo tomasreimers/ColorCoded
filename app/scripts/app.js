@@ -28,18 +28,13 @@ var App = React.createClass({
       files: [{
         name: 'Example.js',
         contents:
-          "function $initHighlight(block, cls) {\n" +
-          "  try {\n" +
-          "    if (cls.search(/\\bno\\-highlight\\b/) != -1)\n" +
-          "      return process(block, true, 0x0F) +\n" +
-          "             ' class=\"\"';\n" +
-          "  } catch (e) {\n" +
-          "    /* handle exception */\n" +
-          "  }\n" +
-          "  for (var i = 0 / 2; i < classes.length; i++) {\n" +
-          "    if (checkCondition(classes[i]) === undefined)\n" +
-          "      return /\\d+[\\s/]/g;\n" +
-          "  }\n" +
+          "function welcome() {\n" +
+          "  // To syntax highlight your code: \n" +
+          "  //   1. Click select files top left, and select the file(s) to upload (or a single zip file) \n" +
+          "  //   2. (optional) Select a color scheme on the top right \n" +
+          "  //   3. (optional) Print the page (or save to PDF) \n" +
+          "  console.log('Hello, World!');\n" +
+          "  return;\n" +
           "}\n"
       }],
       theme: 'default'
@@ -148,21 +143,33 @@ var App = React.createClass({
         } } />
         <div className='nav'>
           <form onSubmit={this.handleSubmit}>
-            <input type="file" id="files" ref="fileField" multiple />
-            <input type="submit" value="Submit!"/>
+            <div className="left">
+              Files (or .zip):
+              <input type="file" className='navFiles' id="files" ref="fileField" onChange={this.handleSubmit} multiple />
+              <input type="submit" value="Syntax Highlight Files"/>
+            </div>
 
-            <select
-              onChange={this._onSelectTheme}
-              value={this.state.theme}>
-              {THEMES.map(function(theme, index) {
-                return <option key={index} value={theme}>{theme}</option>;
-              })}
-            </select>
+            <div className="right">
+              Color Scheme:
+              <select
+                className='navSelect'
+                onChange={this._onSelectTheme}
+                value={this.state.theme}>
+                {THEMES.map(function(theme, index) {
+                  return <option key={index} value={theme}>{theme}</option>;
+                })}
+              </select>
+            </div>
           </form>
         </div>
 
         <div className='contents'>
           {colorCodedFiles}
+        </div>
+
+        <div className='footer'>
+          <hr />
+          Made with &#10084; by <a href="https://twitter.com/tomasreimers" target="_blank">@tomasreimers</a> &amp; <a href="https://twitter.com/zurawiki" target="_blank">@zurawiki</a>
         </div>
       </div>
     );

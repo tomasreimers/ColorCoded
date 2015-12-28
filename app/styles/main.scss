@@ -1,4 +1,6 @@
 $light-grey: #CCCCCC;
+$brand-grey: #A1A1A1;
+$dark-grey: #666666;
 
 html,
 body {
@@ -10,11 +12,43 @@ body {
     background: #fafafa;
     font-family: 'Source Sans Pro', sans-serif;
     color: #333;
+    font-size: 14px;
+}
+
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
 }
 
 .nav {
-  background-color: #FF0000;
+  @extend .no-print;
+  background-color: $brand-grey;
   padding: 10px;
+  position: relative;
+  border-bottom: 1px solid $dark-grey;
+
+  -webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.4);
+  -moz-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.4);
+
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
+
+  &::after {
+    content: " "; /* Older browser do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+  }
 }
 
 .contents {
@@ -34,6 +68,35 @@ body {
 
 .fileContents pre {
   margin: 0;
+}
+
+.navSelect,
+.navFiles {
+  margin-left: 10px;
+}
+
+.footer {
+  @extend .no-print;
+
+  text-align: center;
+  padding: 10px;
+
+  hr {
+    max-width: 50%;
+    background-color: $dark-grey;
+    border: none;
+    height: 1px;
+  }
+
+  a,
+  a:visited,
+  a:active {
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 .browsehappy {
