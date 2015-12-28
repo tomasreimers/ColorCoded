@@ -87,11 +87,15 @@ var App = React.createClass({
     var extension = file.name.split('.').pop();
 
     return (
-      <div key={index}>
-        <h3>{file.name}</h3>
-        <Highlight className={extension}>
-          {file.contents}
-        </Highlight>
+      <div className="fileBox" key={index}>
+        <div className="fileName">
+          {file.name}
+        </div>
+        <div className="fileContents">
+          <Highlight className={extension}>
+            {file.contents}
+          </Highlight>
+        </div>
       </div>
     );
   },
@@ -102,14 +106,16 @@ var App = React.createClass({
 
     return (
       <div>
-        <h3>File Upload</h3>
-        <form onSubmit={this.handleSubmit}>
-          <input type="file" id="files" ref="fileField" multiple />
-          <input type="submit" value="Submit!"/>
-        </form>
+        <div className='nav'>
+          <form onSubmit={this.handleSubmit}>
+            <input type="file" id="files" ref="fileField" multiple />
+            <input type="submit" value="Submit!"/>
+          </form>
+        </div>
 
-        <h3>File Print</h3>
-        {colorCodedFiles}
+        <div className='contents'>
+          {colorCodedFiles}
+        </div>
       </div>
     );
   }
