@@ -1,7 +1,8 @@
-var React = window.React = require('react');
-var ReactDOM = require("react-dom");
 var _ = require("lodash");
 var JSZip = require("JSZip");
+var Highlight = require('react-highlight');
+var React = window.React = require('react');
+var ReactDOM = require("react-dom");
 var update = require('react-addons-update');
 
 var mountNode = document.getElementById("app");
@@ -82,19 +83,22 @@ var App = React.createClass({
     })
   },
 
+  _renderColorCodedFile: function(file, index) {
+    var extension = file.name.split('.').pop();
+
+    return (
+      <div key={index}>
+        <h3>{file.name}</h3>
+        <Highlight className={extension}>
+          {file.contents}
+        </Highlight>
+      </div>
+    );
+  },
+
   // TODO [Tomas, 12-27-2015] : Make this prettier
   render: function() {
-    var filesHTML = []
-    _.each(this.state.files, function (file, idx) {
-      filesHTML.push((
-        <div key={idx}>
-          <h3>{file.name}</h3>
-          <p>
-            {file.contents}
-          </p>
-        </div>
-      ))
-    });
+    var colorCodedFiles = _.map(this.state.files, this._renderColorCodedFile);
 
     return (
       <div>
@@ -105,7 +109,7 @@ var App = React.createClass({
         </form>
 
         <h3>File Print</h3>
-        {filesHTML}
+        {colorCodedFiles}
       </div>
     );
   }
