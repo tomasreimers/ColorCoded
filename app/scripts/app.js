@@ -7,12 +7,42 @@ var update = require('react-addons-update');
 
 var mountNode = document.getElementById("app");
 
+// TODO move constants into separate file
+var CSS_BASE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/';
+var THEMES = [
+  'default',
+  'color-brewer',
+  'github',
+  'monokai',
+  'mono-blue',
+  'railscasts',
+  'solarized',
+  'tomorrow',
+  'zenburn'
+];
 // TODO [Tomas, 12-27-2015] : Make this accept drag and drops (http://www.html5rocks.com/en/tutorials/file/dndfiles/)
 
 var App = React.createClass({
   getInitialState: function () {
     return {
-      files: []
+      files: [{
+        name: 'Example.js',
+        contents:
+        "function $initHighlight(block, cls) {\n" +
+        "  try {\n" +
+        "    if (cls.search(/\bno\-highlight\b/) != -1)\n" +
+        "      return process(block, true, 0x0F) +\n" +
+        "             ' class=\"\"';\n" +
+        "  } catch (e) {\n" +
+        "    /* handle exception */\n" +
+        "  }\n" +
+        "  for (var i = 0 / 2; i < classes.length; i++) {\n" +
+        "    if (checkCondition(classes[i]) === undefined)\n" +
+        "      return /\d+[\s/]/g;\n" +
+        "  }\n" +
+        "}\n"
+      }],
+      theme: 'default'
     }
   },
 
@@ -83,6 +113,12 @@ var App = React.createClass({
     })
   },
 
+  _onSelectTheme: function(newTheme) {
+    this.setState({
+      theme: newTheme.target.value
+    });
+  },
+
   _renderColorCodedFile: function(file, index) {
     var extension = file.name.split('.').pop();
 
@@ -106,10 +142,22 @@ var App = React.createClass({
 
     return (
       <div>
+        <div dangerouslySetInnerHTML={ {__html:
+        // Hack to embed the stylesheet theme in the DOM
+          '<link rel="stylesheet" href="'+ CSS_BASE_URL + this.state.theme + '.min.css" >'
+        } } />
         <div className='nav'>
           <form onSubmit={this.handleSubmit}>
             <input type="file" id="files" ref="fileField" multiple />
             <input type="submit" value="Submit!"/>
+
+            <select
+              onChange={this._onSelectTheme}
+              value={this.state.theme}>
+              {THEMES.map(function(theme, index) {
+                return <option key={index} value={theme}>{theme}</option>;
+              })}
+            </select>
           </form>
         </div>
 
